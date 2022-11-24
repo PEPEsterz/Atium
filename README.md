@@ -11,16 +11,16 @@ This is a platform that enables users to save towards a goal, easily gift to the
 
 A user comes on the platfrom to choose a plan. The list of Atium plans are:
 
-- Savings
+- **Savings** <br />
 The savings plan enables you to save towards a goal or an event of your choice. Excpet the plan is cancelled, savings can not be withdrawn from the contract until goal is reached
 
-- Allowance
+- **Allowance** <br />
 The allowance plan is a plan created for guardians. In this case, the user can selcet the withdrawal amount and interval for the allowance. The bbenefit of this is that the guardian/sender does not have to constantly send allowance at every interval. All deposits could be made at the beginning, but only the selected amount can be withdrawn at every interval
 
-- Trustfund 
+- **Trustfund** <br />
 The trustfund plan is very similar to the allowance plan. The trustfund plan is for a much later date in time. You can now do more with your crypto assets by allocating them to your ward at a stipulated age
 
-- Gift
+- **Gift** <br />
 The gift plan is a single transaction that can be redeemed by the receiver on the day of the event 
 
 The Blockchain package contains custom smart contracts which deploy to Polygon. For this hackathon, it has been deployed on Polygon testnet - mumbai 
