@@ -35,6 +35,9 @@ contract Atium is AtiumPlan {
     ///////////////////////////////////////////////////////
 
     function save(uint256 _id, uint256 _amount) external payable inSavings(_id) {
+        if (_id == 0 || _amount == 0) {
+            revert Atium_ZeroInput();
+        }
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
@@ -71,6 +74,9 @@ contract Atium is AtiumPlan {
     }
 
     function allowance(uint256 _id, uint256 _amount) external payable inAllowance(_id) {
+        if (_id == 0 || _amount == 0) {
+            revert Atium_ZeroInput();
+        }
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
@@ -106,6 +112,9 @@ contract Atium is AtiumPlan {
     }
 
     function trustfund(uint256 _id, uint256 _amount) external payable inTrustfund(_id) {
+        if (_id == 0 || _amount == 0) {
+            revert Atium_ZeroInput();
+        }
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
@@ -141,6 +150,9 @@ contract Atium is AtiumPlan {
     }
 
     function gift(uint256 _id, uint256 _amount) external payable inGift(_id) {
+        if (_id == 0 || _amount == 0) {
+            revert Atium_ZeroInput();
+        }
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
@@ -199,12 +211,23 @@ contract Atium is AtiumPlan {
             revert Atium_NoWithdrawal();
         }
 
+        uint256 a = block.timestamp;
+        uint256 b = allowanceDate[_id];
+        uint256 c = allowanceById[_id].withdrawalInterval;
+
+        if ((a - b) < c) {
+            revert Atium_OnlyFutureDate();
+        }
+
+        uint256 d = (a - b) / c;
+        allowanceDate[_id] += (d * c);
+        
         if (allowanceBalance[_id] < allowanceById[_id].withdrawalAmount) {
             witAmount = allowanceBalance[_id];
         }
 
         if (allowanceBalance[_id] >= allowanceById[_id].withdrawalAmount) {
-            witAmount = allowanceById[_id].withdrawalAmount;
+            witAmount = d * allowanceById[_id].withdrawalAmount;
         }
 
         allowanceBalance[_id] -= witAmount;
@@ -223,12 +246,19 @@ contract Atium is AtiumPlan {
             revert Atium_NoWithdrawal();
         }
 
+        uint256 a = trustfundById[_id].startDate;
+        uint256 b = trustfundDate[_id];
+        uint256 c = trustfundById[_id].withdrawalInterval;
+
+        uint256 d = (a - b) / c;
+        trustfundDate[_id] += (d * c);
+
         if (trustfundBalance[_id] < trustfundById[_id].withdrawalAmount) {
             witAmount = trustfundBalance[_id];
         }
 
         if (trustfundBalance[_id] >= trustfundById[_id].withdrawalAmount) {
-            witAmount = trustfundById[_id].withdrawalAmount;
+            witAmount = d * trustfundById[_id].withdrawalAmount;
         }
 
         trustfundBalance[_id] -= witAmount;
@@ -275,7 +305,7 @@ contract Atium is AtiumPlan {
         }
         allowanceCancelled[_id] = true;
         
-        (bool sent, ) = payable(msg.sender).call{value: allowanceById[_id].deposit}("");
+        (bool sent, ) = payable(msg.sender).call{value: allowanceBalance[_id]}("");
         if (!sent) {
             revert Atium_TransactionFailed();
         }
@@ -289,7 +319,7 @@ contract Atium is AtiumPlan {
         }
         trustfundCancelled[_id] = true;
         
-        (bool sent, ) = payable(msg.sender).call{value: trustfundById[_id].amount}("");
+        (bool sent, ) = payable(msg.sender).call{value: trustfundBalance[_id]}("");
         if (!sent) {
             revert Atium_TransactionFailed();
         }    
@@ -310,7 +340,27 @@ contract Atium is AtiumPlan {
 
         emit Withdrawn(msg.sender, 2, giftById[_id].amount);
     }
+    
+    ///////////////////////////////////////////////////////
+    ///////////////// GETTERS FUNCTIONS  //////////////////
+    ///////////////////////////////////////////////////////
 
+    function getSavingsBalance(uint256 _id) public view returns (uint256) {
+        return savingsById[_id].amount;
+    }
+
+    function getAllowanceBalance(uint256 _id) public view returns (uint256) {
+        return allowanceBalance[_id];
+    }
+
+    function getTrustfundBalance(uint256 _id) public view returns (uint256) {
+        return trustfundBalance[_id];
+    }
+
+    function getGiftBalance(uint256 _id) public view returns (uint256) {
+        return giftById[_id].amount;
+        
+    }
 
     ///////////////////////////////////////////////////////
     ///////////////// RECEIVER MODIFIERS //////////////////
