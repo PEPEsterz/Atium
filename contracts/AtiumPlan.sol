@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 error Atium_NotOwnerId();
 error Atium_OnlyFutureDate();
+error Atium_ZeroInput();
 
 contract AtiumPlan {
     using Counters for Counters.Counter;
@@ -20,6 +21,9 @@ contract AtiumPlan {
     mapping(uint256 => AllowanceList) internal allowanceById;
     mapping(uint256 => TrustFundList) internal trustfundById;
     mapping(uint256 => GiftList) internal giftById;
+
+    mapping(uint256 => uint256) internal allowanceDate;
+    mapping(uint256 => uint256) internal trustfundDate;
 
     enum Select {SAVINGS, ALLOWANCE, TRUSTFUND, GIFT}
     //SAVINGS = 0, ALLOWANCE = 1, TRUSTFUND = 2. GIFT = 3
@@ -105,6 +109,9 @@ contract AtiumPlan {
     /////////////////////////////////////////////////////////
 
     function savingsPlanGoal(uint256 _goal) external {
+        if (_goal == 0) {
+            revert Atium_ZeroInput();
+        }
         _atiumId.increment();
         _savingsId.increment();
 
@@ -135,6 +142,9 @@ contract AtiumPlan {
     }
 
     function savingsPlanTime(uint256 _time) external {
+        if (_time == 0) {
+            revert Atium_ZeroInput();
+        }
         _atiumId.increment();
         _savingsId.increment();
         _time += block.timestamp;
@@ -171,6 +181,10 @@ contract AtiumPlan {
         uint256 _amount, 
         uint256 _interval
         ) external {
+        
+        if (_receiver == address(0) || _startDate == 0 || _amount == 0 || _interval == 0) {
+            revert Atium_ZeroInput();
+        }
 
         _atiumId.increment();
         _allowanceId.increment();
@@ -194,6 +208,7 @@ contract AtiumPlan {
 
         atiumById[_atiumId.current()] = a;
         allowanceById[_allowanceId.current()] = al;
+        allowanceDate[_allowanceId.current()] = _startDate;
 
         emit Allowance(
         _allowanceId.current(), 
@@ -212,6 +227,10 @@ contract AtiumPlan {
         uint256 _amount, 
         uint256 _interval
         ) external {
+
+        if (_receiver == address(0) || _startDate == 0 || _amount == 0 || _interval == 0) {
+            revert Atium_ZeroInput();
+        }
 
         _atiumId.increment();
         _trustfundId.increment();
@@ -235,6 +254,7 @@ contract AtiumPlan {
 
         atiumById[_atiumId.current()] = a;
         trustfundById[_trustfundId.current()] = t;
+        trustfundDate[_trustfundId.current()] = _startDate;
 
         emit Trustfund(
         _trustfundId.current(), 
@@ -248,6 +268,11 @@ contract AtiumPlan {
     }
 
     function giftPlan(address _receiver, uint256 _date) external {
+
+        if (_receiver == address(0) || _date == 0) {
+            revert Atium_ZeroInput();
+        }
+
         _atiumId.increment();
         _giftId.increment();
         _date += block.timestamp;
@@ -347,6 +372,7 @@ contract AtiumPlan {
         });
 
         allowanceById[_id] = al;
+        allowanceDate[_id] = _startDate;
 
         emit Allowance(
         _id, 
@@ -380,6 +406,7 @@ contract AtiumPlan {
         });
 
         trustfundById[_id] = t;
+        trustfundDate[_id] = _startDate;
 
         emit Trustfund(
         _id, 
