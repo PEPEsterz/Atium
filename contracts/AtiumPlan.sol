@@ -22,6 +22,41 @@ contract AtiumPlan {
     mapping(uint256 => GiftList) internal giftById;
 
     enum Select {SAVINGS, ALLOWANCE, TRUSTFUND, GIFT}
+    //SAVINGS = 0, ALLOWANCE = 1, TRUSTFUND = 2. GIFT = 3
+
+    /*///////////////////////////////////////////////////////////////
+                            Events
+    //////////////////////////////////////////////////////////////*/
+
+    event Savings(uint256 id, address indexed user, uint256 deposit, uint256 goal, uint256 time);
+
+    event Allowance(
+        uint256 id, 
+        address indexed user,
+        address indexed receiver, 
+        uint256 deposit,
+        uint256 startDate,
+        uint256 withdrawal,
+        uint256 interval
+        );
+
+    event Trustfund(
+        uint256 id, 
+        address indexed user,
+        address indexed receiver, 
+        uint256 deposit,
+        uint256 startDate,
+        uint256 withdrawal,
+        uint256 interval
+        );
+
+    event Gift(
+        uint256 id, 
+        address indexed user, 
+        address indexed receiver, 
+        uint256 deposit,
+        uint256 date
+        );
 
     struct AtiumList {
         uint256 id;
@@ -89,6 +124,14 @@ contract AtiumPlan {
 
         atiumById[_atiumId.current()] = a;
         savingsById[_savingsId.current()] = s;
+
+        emit Savings(
+            _savingsId.current(), 
+            msg.sender, 
+            savingsById[_savingsId.current()].amount,
+            _goal, 
+            0
+            );
     }
 
     function savingsPlanTime(uint256 _time) external {
@@ -112,6 +155,14 @@ contract AtiumPlan {
 
         atiumById[_atiumId.current()] = a;
         savingsById[_savingsId.current()] = s;
+
+        emit Savings(
+            _savingsId.current(), 
+            msg.sender, 
+            savingsById[_savingsId.current()].amount,
+            0, 
+            _time
+            );
     }
 
     function allowancePlan(
@@ -143,6 +194,16 @@ contract AtiumPlan {
 
         atiumById[_atiumId.current()] = a;
         allowanceById[_allowanceId.current()] = al;
+
+        emit Allowance(
+        _allowanceId.current(), 
+        msg.sender,
+        _receiver, 
+        allowanceById[_allowanceId.current()].deposit,
+        _startDate,
+        _amount,
+        _interval
+        );
     }
 
     function trustfundPlan(
@@ -154,6 +215,7 @@ contract AtiumPlan {
 
         _atiumId.increment();
         _trustfundId.increment();
+        _startDate += block.timestamp;
 
         AtiumList memory a = AtiumList ({
             id: _atiumId.current(),
@@ -166,18 +228,29 @@ contract AtiumPlan {
             sender: msg.sender,
             receiver: _receiver,
             amount: trustfundById[_trustfundId.current()].amount,
-            startDate: _startDate += block.timestamp,
+            startDate: _startDate,
             withdrawalAmount: _amount,
             withdrawalInterval: _interval
         });
 
         atiumById[_atiumId.current()] = a;
         trustfundById[_trustfundId.current()] = t;
+
+        emit Trustfund(
+        _trustfundId.current(), 
+        msg.sender,
+        _receiver, 
+        trustfundById[_trustfundId.current()].amount,
+        _startDate,
+        _amount,
+        _interval
+        );
     }
 
     function giftPlan(address _receiver, uint256 _date) external {
         _atiumId.increment();
         _giftId.increment();
+        _date += block.timestamp;
 
         AtiumList memory a = AtiumList ({
             id: _atiumId.current(),
@@ -190,11 +263,19 @@ contract AtiumPlan {
             sender: msg.sender,
             receiver: _receiver,
             amount: giftById[_giftId.current()].amount,
-            date: _date += block.timestamp
+            date: _date
         });
 
         atiumById[_atiumId.current()] = a;
         giftById[_giftId.current()] = g;
+
+        emit Gift(
+            _giftId.current(), 
+            msg.sender, 
+            _receiver, 
+            giftById[_giftId.current()].amount,
+            _date
+            );
     }
 
     /////////////////////////////////////////////////////
@@ -212,19 +293,37 @@ contract AtiumPlan {
         });
 
         savingsById[_id] = s;
+
+        emit Savings(
+            _id, 
+            msg.sender, 
+            savingsById[_id].amount,
+            _goal, 
+            0
+            );
     }
 
     function editSavingsPlanTime(uint256 _id, uint256 _time) public inSavings(_id) {
+
+        _time += block.timestamp;
 
         SavingsList memory s = SavingsList ({
             id: _id,
             user: msg.sender,
             amount: savingsById[_id].amount,
             goal: 0,
-            time: _time += block.timestamp
+            time: _time
         });
 
         savingsById[_id] = s;
+
+        emit Savings(
+            _id, 
+            msg.sender, 
+            savingsById[_id].amount,
+            0, 
+            _time
+            );
     }
 
     function editAllowancePlan(
@@ -235,6 +334,8 @@ contract AtiumPlan {
         uint256 _interval
         ) external inAllowance(_id) {
 
+        _startDate += block.timestamp;
+
         AllowanceList memory al = AllowanceList ({
             id: _id,
             sender: msg.sender,
@@ -242,10 +343,20 @@ contract AtiumPlan {
             deposit: allowanceById[_id].deposit,
             startDate: _startDate += block.timestamp,
             withdrawalAmount: _amount,
-            withdrawalInterval: _interval += block.timestamp
+            withdrawalInterval: _interval
         });
 
         allowanceById[_id] = al;
+
+        emit Allowance(
+        _id, 
+        msg.sender,
+        _receiver, 
+        allowanceById[_id].deposit,
+        _startDate,
+        _amount,
+        _interval
+        );
     }
 
     function editTrustfundPlan(
@@ -256,29 +367,52 @@ contract AtiumPlan {
         uint256 _interval
         ) external inTrustfund(_id) {
 
+        _startDate += block.timestamp;
+
         TrustFundList memory t = TrustFundList ({
             id: _id,
             sender: msg.sender,
             receiver: _receiver,
             amount: trustfundById[_id].amount,
-            startDate: _startDate += block.timestamp,
+            startDate: _startDate,
             withdrawalAmount: _amount,
             withdrawalInterval: _interval
         });
 
         trustfundById[_id] = t;
+
+        emit Trustfund(
+        _id, 
+        msg.sender,
+        _receiver, 
+        trustfundById[_id].amount,
+        _startDate,
+        _amount,
+        _interval
+        );
     }
 
     function editGiftPlan(uint256 _id, address _receiver, uint256 _date) external inGift(_id) {
+
+        _date += block.timestamp;
+
         GiftList memory g = GiftList ({
-            id: _giftId.current(),
+            id: _id,
             sender: msg.sender,
             receiver: _receiver,
             amount: giftById[_id].amount,
-            date: _date += block.timestamp
+            date: _date
         });
 
         giftById[_id] = g;
+
+        emit Gift(
+            _id, 
+            msg.sender, 
+            _receiver, 
+            giftById[_id].amount,
+            _date
+            );
     }
 
     /////////////////////////////////////////////////////
