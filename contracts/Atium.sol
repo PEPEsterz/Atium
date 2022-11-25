@@ -26,6 +26,9 @@ contract Atium is AtiumPlan {
     mapping(uint256 => uint256) private allowanceBalance;
     mapping(uint256 => uint256) private trustfundBalance;
 
+    event Withdrawn(address indexed receiver, uint256 atium, uint256 amount);
+    /// for atium values -- SAVINGS = 0, ALLOWANCE = 1, TRUSTFUND = 2. GIFT = 3
+
 
     ///////////////////////////////////////////////////////
     ///////////////// DEPOSIT FUNCTIONS ///////////////////
@@ -57,6 +60,14 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Savings(
+            _id, 
+            msg.sender, 
+            savingsById[_id].amount,
+            savingsById[_id].goal, 
+            savingsById[_id].time
+            );
     }
 
     function allowance(uint256 _id, uint256 _amount) external payable inAllowance(_id) {
@@ -82,6 +93,16 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Allowance(
+        _id, 
+        msg.sender,
+        allowanceById[_id].receiver,
+        allowanceById[_id].deposit,
+        allowanceById[_id].startDate,
+        allowanceById[_id].withdrawalAmount,
+        allowanceById[_id].withdrawalInterval
+        );
     }
 
     function trustfund(uint256 _id, uint256 _amount) external payable inTrustfund(_id) {
@@ -107,6 +128,16 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Trustfund(
+        _id, 
+        msg.sender,
+        trustfundById[_id].receiver,
+        trustfundById[_id].amount,
+        trustfundById[_id].startDate,
+        trustfundById[_id].withdrawalAmount,
+        trustfundById[_id].withdrawalInterval
+        );
     }
 
     function gift(uint256 _id, uint256 _amount) external payable inGift(_id) {
@@ -129,6 +160,14 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Gift(
+            _id, 
+            msg.sender, 
+            giftById[_id].receiver,
+            giftById[_id].amount,
+            giftById[_id].date
+            );
     }
 
 
@@ -149,6 +188,8 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Withdrawn(msg.sender, 0, savingsById[_id].amount);
     }
 
     function w_allowance(uint256 _id) external rAllowance(_id) {
@@ -171,6 +212,8 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Withdrawn(msg.sender, 1, witAmount);
     }
 
     function w_trustfund(uint256 _id) external rTrustfund(_id) {
@@ -193,6 +236,8 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Withdrawn(msg.sender, 2, witAmount);
     }
 
     function w_gift(uint256 _id) external rGift(_id) {
@@ -201,6 +246,8 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Withdrawn(msg.sender, 3, giftById[_id].amount);
     }
 
 
@@ -208,7 +255,7 @@ contract Atium is AtiumPlan {
     ///////////////// CANCEL PLANS FUNCTIONS //////////////////
     ///////////////////////////////////////////////////////////
 
-    function cancelSavings(uint256 _id) external {
+    function cancelSavings(uint256 _id) external inSavings(_id) {
         if (savingsCancelled[_id]) {
             revert Atium_Cancelled();
         }
@@ -218,9 +265,11 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Withdrawn(msg.sender, 0, savingsById[_id].amount);
     }
 
-    function cancelAllowance(uint256 _id) external {
+    function cancelAllowance(uint256 _id) external inAllowance(_id) {
         if (allowanceCancelled[_id]) {
             revert Atium_Cancelled();
         }
@@ -230,9 +279,11 @@ contract Atium is AtiumPlan {
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+
+        emit Withdrawn(msg.sender, 1, allowanceById[_id].deposit);
     }
 
-    function cancelTrustfund(uint256 _id) external {
+    function cancelTrustfund(uint256 _id) external inTrustfund(_id) {
         if (trustfundCancelled[_id]) {
             revert Atium_Cancelled();
         }
@@ -241,10 +292,12 @@ contract Atium is AtiumPlan {
         (bool sent, ) = payable(msg.sender).call{value: trustfundById[_id].amount}("");
         if (!sent) {
             revert Atium_TransactionFailed();
-        }           
+        }    
+
+        emit Withdrawn(msg.sender, 2, trustfundById[_id].amount);
     }
 
-    function cancelGift(uint256 _id) external {
+    function cancelGift(uint256 _id) external inGift(_id) {
         if (giftCancelled[_id]) {
             revert Atium_Cancelled();
         }
@@ -253,7 +306,9 @@ contract Atium is AtiumPlan {
         (bool sent, ) = payable(msg.sender).call{value: giftById[_id].amount}("");
         if (!sent) {
             revert Atium_TransactionFailed();
-        }          
+        }     
+
+        emit Withdrawn(msg.sender, 2, giftById[_id].amount);
     }
 
 
