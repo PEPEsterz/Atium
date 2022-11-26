@@ -86,7 +86,10 @@ npx hardhat test
 ```bash
 npx hardhat run --network polygon_mumbai scripts/atium.deploy.js
 ```
-
+#### Atium.sol
 - https://mumbai.polygonscan.com/address/0x93A6B7178a01464821bE109949f22Ae96Dc29298#code
+
+#### AtiumToken.sol
+- https://mumbai.polygonscan.com/address/0xBc3A7Ca74250cE4075a90f0a0935D8ab8149FFA7#code
 
 # Troubleshooting
