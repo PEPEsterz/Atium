@@ -1,11 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-import "./AtiumReg.sol";
-import "./AtiumToken.sol";
 import "./AtiumPlan.sol";
 
 error Atium_NotAmount();
@@ -17,6 +14,8 @@ error Atium_Cancelled();
 error Atium_SavingsGoal_Exceeded(uint256 goal, uint256 rem);
 
 contract Atium is AtiumPlan {
+    using Counters for Counters.Counter;
+    Counters.Counter private _loyaltyId;
 
     mapping(uint256 => bool) private savingsCancelled;
     mapping(uint256 => bool) private allowanceCancelled;
@@ -26,6 +25,9 @@ contract Atium is AtiumPlan {
     mapping(uint256 => uint256) private allowanceBalance;
     mapping(uint256 => uint256) private trustfundBalance;
 
+    mapping(uint256 => address) private loyaltyId;
+    mapping(address => uint256) private loyaltyPoints;
+    
     event Withdrawn(address indexed receiver, uint256 atium, uint256 amount);
     /// for atium values -- SAVINGS = 0, ALLOWANCE = 1, TRUSTFUND = 2. GIFT = 3
 
@@ -46,6 +48,12 @@ contract Atium is AtiumPlan {
                 goal: savingsById[_id].goal,
                 rem: savingsById[_id].goal - savingsById[_id].amount
             });
+        }
+        _loyaltyId.increment();
+
+        if (member[msg.sender] == true) {
+            loyaltyId[_loyaltyId.current()] = msg.sender;
+            loyaltyPoints[msg.sender]++;
         }
         savingsById[_id].amount += _amount;
 
@@ -79,6 +87,12 @@ contract Atium is AtiumPlan {
         }
         if (msg.value != _amount) {
             revert Atium_NotAmount();
+        }
+        _loyaltyId.increment();
+
+        if (member[msg.sender] == true) {
+            loyaltyId[_loyaltyId.current()] = msg.sender;
+            loyaltyPoints[msg.sender]++;
         }
         allowanceById[_id].deposit += _amount;
         allowanceBalance[_id] += _amount;
@@ -118,6 +132,12 @@ contract Atium is AtiumPlan {
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
+        _loyaltyId.increment();
+
+        if (member[msg.sender] == true) {
+            loyaltyId[_loyaltyId.current()] = msg.sender;
+            loyaltyPoints[msg.sender]++;
+        }
         trustfundById[_id].amount += _amount;
         trustfundBalance[_id] += _amount;
 
@@ -155,6 +175,12 @@ contract Atium is AtiumPlan {
         }
         if (msg.value != _amount) {
             revert Atium_NotAmount();
+        }
+        _loyaltyId.increment();
+
+        if (member[msg.sender] == true) {
+            loyaltyId[_loyaltyId.current()] = msg.sender;
+            loyaltyPoints[msg.sender]++;
         }
         giftById[_id].amount += _amount;
 
@@ -361,6 +387,19 @@ contract Atium is AtiumPlan {
         return giftById[_id].amount;
         
     }
+
+    ///////////////////////////////////////////////////////
+    //////////////// LOYALTY (FOR REWARD) /////////////////
+    ///////////////////////////////////////////////////////
+
+    function checkLoyaltyId(uint256 _id) public view returns (address) {
+        return loyaltyId[_id];
+    }
+
+    function checkUserLoyaltyPoints(address _user) public view returns (uint256) {
+        return loyaltyPoints[_user];
+    }
+
 
     ///////////////////////////////////////////////////////
     ///////////////// RECEIVER MODIFIERS //////////////////
