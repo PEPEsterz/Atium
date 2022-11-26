@@ -25,9 +25,10 @@ contract Atium is AtiumPlan {
     mapping(uint256 => uint256) private allowanceBalance;
     mapping(uint256 => uint256) private trustfundBalance;
 
+    /*
     mapping(uint256 => address) private loyaltyId;
     mapping(address => uint256) private loyaltyPoints;
-    
+    */
     event Withdrawn(address indexed receiver, uint256 atium, uint256 amount);
     /// for atium values -- SAVINGS = 0, ALLOWANCE = 1, TRUSTFUND = 2. GIFT = 3
 
@@ -49,12 +50,14 @@ contract Atium is AtiumPlan {
                 rem: savingsById[_id].goal - savingsById[_id].amount
             });
         }
+        /*
         _loyaltyId.increment();
-
+        
         if (member[msg.sender] == true) {
             loyaltyId[_loyaltyId.current()] = msg.sender;
             loyaltyPoints[msg.sender]++;
         }
+        */
         savingsById[_id].amount += _amount;
 
         SavingsList memory s = SavingsList ({
@@ -88,12 +91,14 @@ contract Atium is AtiumPlan {
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
+        /*
         _loyaltyId.increment();
 
         if (member[msg.sender] == true) {
             loyaltyId[_loyaltyId.current()] = msg.sender;
             loyaltyPoints[msg.sender]++;
         }
+        */
         allowanceById[_id].deposit += _amount;
         allowanceBalance[_id] += _amount;
 
@@ -132,12 +137,14 @@ contract Atium is AtiumPlan {
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
+        /*
         _loyaltyId.increment();
 
         if (member[msg.sender] == true) {
             loyaltyId[_loyaltyId.current()] = msg.sender;
             loyaltyPoints[msg.sender]++;
         }
+        */
         trustfundById[_id].amount += _amount;
         trustfundBalance[_id] += _amount;
 
@@ -176,12 +183,14 @@ contract Atium is AtiumPlan {
         if (msg.value != _amount) {
             revert Atium_NotAmount();
         }
+        /*
         _loyaltyId.increment();
 
         if (member[msg.sender] == true) {
             loyaltyId[_loyaltyId.current()] = msg.sender;
             loyaltyPoints[msg.sender]++;
         }
+        */
         giftById[_id].amount += _amount;
 
         GiftList memory g = GiftList ({
@@ -391,7 +400,7 @@ contract Atium is AtiumPlan {
     ///////////////////////////////////////////////////////
     //////////////// LOYALTY (FOR REWARD) /////////////////
     ///////////////////////////////////////////////////////
-
+    /*
     function checkLoyaltyId(uint256 _id) public view returns (address) {
         return loyaltyId[_id];
     }
@@ -399,7 +408,7 @@ contract Atium is AtiumPlan {
     function checkUserLoyaltyPoints(address _user) public view returns (uint256) {
         return loyaltyPoints[_user];
     }
-
+    */
 
     ///////////////////////////////////////////////////////
     ///////////////// RECEIVER MODIFIERS //////////////////
