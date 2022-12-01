@@ -217,6 +217,73 @@ contract Atium is AtiumPlan {
     }
 
 
+    ///////////////////////////////////////////////////////////
+    ///////////////// CANCEL PLANS FUNCTIONS //////////////////
+    ///////////////////////////////////////////////////////////
+
+    function cancelSavings(uint256 _id) external inSavings(_id) {
+        if (savingsCancelled[_id]) {
+            revert Atium_Cancelled();
+        }
+        userS_Ids[msg.sender].removeElement(_id);
+
+        savingsCancelled[_id] = true;
+        addrToActiveAllowance[msg.sender].remove(_id);
+
+        (bool sent, ) = payable(msg.sender).call{value: savingsById[_id].amount}("");
+        if (!sent) {
+            revert Atium_TransactionFailed();
+        }
+    }
+
+    function cancelAllowance(uint256 _id) external inAllowance(_id) {
+        if (allowanceCancelled[_id]) {
+            revert Atium_Cancelled();
+        }
+        userA_Ids[msg.sender].removeElement(_id);
+
+        allowanceCancelled[_id] = true;
+        addrToActiveAllowance[msg.sender].remove(_id);    
+        
+        (bool sent, ) = payable(msg.sender).call{value: allowanceBalance[_id]}("");
+        if (!sent) {
+            revert Atium_TransactionFailed();
+        }
+    }
+
+    function cancelTrustfund(uint256 _id) external inTrustfund(_id) {
+        if (trustfundCancelled[_id]) {
+            revert Atium_Cancelled();
+        }
+        userT_Ids[msg.sender].removeElement(_id);
+
+        trustfundCancelled[_id] = true;
+        addrToActiveTrustfund[msg.sender].remove(_id);    
+        
+        (bool sent, ) = payable(msg.sender).call{value: trustfundBalance[_id]}("");
+        if (!sent) {
+            revert Atium_TransactionFailed();
+        }    
+    }
+
+    function cancelGift(uint256 _id) external inGift(_id) {
+        if (giftCancelled[_id]) {
+            revert Atium_Cancelled();
+        }
+        userG_Ids[msg.sender].removeElement(_id);
+
+        giftCancelled[_id] = true;
+        addrToActiveGift[msg.sender].remove(_id);    
+        
+        (bool sent, ) = payable(msg.sender).call{value: giftById[_id].amount}("");
+        if (!sent) {
+            revert Atium_TransactionFailed();
+        }     
+    }
+    
+
+
+
     ///////////////////////////////////////////////////////
     ///////////////// GETTERS FUNCTIONS  //////////////////
     ///////////////////////////////////////////////////////
