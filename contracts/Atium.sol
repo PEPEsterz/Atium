@@ -205,7 +205,7 @@ contract Atium is AtiumPlan {
     }
 
     function w_gift(uint256 _id) external {
-        userG_Ids[giftById[_id].receiver].removeElement(_id);
+        userG_Ids[giftById[_id].sender].removeElement(_id);
 
         giftCancelled[_id] = true;
         addrToActiveGift[giftById[_id].receiver].remove(_id);    
