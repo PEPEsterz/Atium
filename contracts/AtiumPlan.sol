@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 error Atium_NotOwnerId();
-error Atium_OnlyFutureDate();
 error Atium_ZeroInput();
 
 contract AtiumPlan {
@@ -14,9 +13,9 @@ contract AtiumPlan {
 
     Counters.Counter private _atiumId;
     Counters.Counter private _savingsId;
-    Counters.Counter private _allowanceId;
-    Counters.Counter private _trustfundId;
-    Counters.Counter private _giftId;
+    Counters.Counter internal _allowanceId;
+    Counters.Counter internal _trustfundId;
+    Counters.Counter internal _giftId;
 
     
 
@@ -30,11 +29,6 @@ contract AtiumPlan {
     mapping(address => uint256[]) internal userA_Ids;
     mapping(address => uint256[]) internal userT_Ids;
     mapping(address => uint256[]) internal userG_Ids;
-
-    mapping(address => EnumerableSet.UintSet) internal addrToActiveSavings;
-    mapping(address => EnumerableSet.UintSet) internal addrToActiveAllowance;
-    mapping(address => EnumerableSet.UintSet) internal addrToActiveTrustfund;
-    mapping(address => EnumerableSet.UintSet) internal addrToActiveGift;
 
     mapping(address => uint256[]) internal receiverA_Ids;
     mapping(address => uint256[]) internal receiverT_Ids;
@@ -117,8 +111,6 @@ contract AtiumPlan {
         atiumById[_atiumId.current()] = a;
         savingsById[_savingsId.current()] = s;
         userS_Ids[msg.sender].push(_savingsId.current());
-
-        addrToActiveSavings[msg.sender].add(s.id);
     }
 
     function savingsPlanTime(uint256 _time) external {
@@ -146,8 +138,6 @@ contract AtiumPlan {
         atiumById[_atiumId.current()] = a;
         savingsById[_savingsId.current()] = s;
         userS_Ids[msg.sender].push(_savingsId.current());
-
-        addrToActiveSavings[msg.sender].add(s.id);
     }
 
     function allowancePlan(
@@ -186,8 +176,6 @@ contract AtiumPlan {
         allowanceDate[_allowanceId.current()] = _startDate;
         userA_Ids[msg.sender].push(_allowanceId.current());
         receiverA_Ids[_receiver].push(_allowanceId.current());
-
-        addrToActiveAllowance[msg.sender].add(al.id);
     }
 
     function trustfundPlan(
@@ -226,8 +214,6 @@ contract AtiumPlan {
         trustfundDate[_trustfundId.current()] = _startDate;
         userT_Ids[msg.sender].push(_trustfundId.current());
         receiverT_Ids[_receiver].push(_trustfundId.current());
-
-        addrToActiveTrustfund[msg.sender].add(t.id);
     }
 
     function giftPlan(address _receiver, uint256 _date) external {
@@ -258,8 +244,6 @@ contract AtiumPlan {
         giftById[_giftId.current()] = g;
         userG_Ids[msg.sender].push(_giftId.current());
         receiverG_Ids[_receiver].push(_giftId.current());
-
-        addrToActiveGift[msg.sender].add(g.id);
     }
 
 
