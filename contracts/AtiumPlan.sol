@@ -273,8 +273,8 @@ contract AtiumPlan {
     }
 
     ///@notice - Get all active user savings
-    function getAllActiveSavings() external view returns (SavingsList[] memory) {
-        uint256[] memory allActiveSavings = userS_Ids[msg.sender];
+    function getAllActiveSavings(address _user) external view returns (SavingsList[] memory) {
+        uint256[] memory allActiveSavings = userS_Ids[_user];
         uint256 length = allActiveSavings.length;
         SavingsList[] memory allSavings = new SavingsList[](length);
 
@@ -288,8 +288,8 @@ contract AtiumPlan {
         return allSavings;
     }
 
-    function getAllActiveAllowance() external view returns (AllowanceList[] memory) {
-        uint256[] memory allActiveAllowance = userA_Ids[msg.sender];
+    function getAllActiveAllowance(address _user) external view returns (AllowanceList[] memory) {
+        uint256[] memory allActiveAllowance = userA_Ids[_user];
         uint256 length = allActiveAllowance.length;
         AllowanceList[] memory allAllowance = new AllowanceList[](length);
 
@@ -303,8 +303,8 @@ contract AtiumPlan {
         return allAllowance;
     }
 
-    function getAllActiveTrustfund() external view returns (TrustFundList[] memory) {
-        uint256[] memory allActiveTrustfund = userT_Ids[msg.sender];
+    function getAllActiveTrustfund(address _user) external view returns (TrustFundList[] memory) {
+        uint256[] memory allActiveTrustfund = userT_Ids[_user];
         uint256 length = allActiveTrustfund.length;
         TrustFundList[] memory allTrustfund = new TrustFundList[](length);
 
@@ -318,8 +318,8 @@ contract AtiumPlan {
         return allTrustfund;
     }
 
-    function getAllActiveGift() external view returns (GiftList[] memory) {
-        uint256[] memory allActiveGift = userG_Ids[msg.sender];
+    function getAllActiveGift(address _user) external view returns (GiftList[] memory) {
+        uint256[] memory allActiveGift = userG_Ids[_user];
         uint256 length = allActiveGift.length;
         GiftList[] memory allGift = new GiftList[](length);
 
