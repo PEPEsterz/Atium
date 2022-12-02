@@ -5,7 +5,6 @@ import "./AtiumPlan.sol";
 import "./Array.sol";
 
 error Atium_NotAmount();
-error Atium_NotReceiverId();
 error Atium_SavingsGoal_Not_Hit();
 error Atium_NoWithdrawal();
 error Atium_TransactionFailed();
@@ -47,9 +46,6 @@ contract Atium is AtiumPlan {
         savingsById[_id].amount += _amount;
 
 
-        addrToActiveAllowance[msg.sender].remove(_id);    
-        addrToActiveAllowance[msg.sender].add(_id); 
-
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
         if (!sent) {
             revert Atium_TransactionFailed();
@@ -64,11 +60,9 @@ contract Atium is AtiumPlan {
             revert Atium_NotAmount();
         }
 
+        allowanceDate[_id] = allowanceById[_id].startDate;
         allowanceById[_id].deposit += _amount;
         allowanceBalance[_id] += _amount;
-
-        addrToActiveAllowance[msg.sender].remove(_id);    
-        addrToActiveAllowance[msg.sender].add(_id); 
 
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
         if (!sent) {
@@ -84,11 +78,9 @@ contract Atium is AtiumPlan {
             revert Atium_NotAmount();
         }
 
+        trustfundDate[_id] = trustfundById[_id].startDate;
         trustfundById[_id].amount += _amount;
         trustfundBalance[_id] += _amount;
-
-        addrToActiveTrustfund[msg.sender].remove(_id);    
-        addrToActiveTrustfund[msg.sender].add(_id); 
 
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
         if (!sent) {
@@ -105,9 +97,6 @@ contract Atium is AtiumPlan {
         }
 
         giftById[_id].amount += _amount;
-
-        addrToActiveGift[msg.sender].remove(_id);    
-        addrToActiveGift[msg.sender].add(_id);
 
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
         if (!sent) {
@@ -129,7 +118,6 @@ contract Atium is AtiumPlan {
         }
         userS_Ids[savingsById[_id].user].removeElement(_id);
         savingsCancelled[_id] = true;
-        addrToActiveAllowance[savingsById[_id].user].remove(_id);
 
         (bool sent, ) = payable(savingsById[_id].user).call{value: savingsById[_id].amount}("");
         if (!sent) {
@@ -137,22 +125,14 @@ contract Atium is AtiumPlan {
         }
     }
 
-    function w_allowance(uint256 _id) external {
+    function w_allowance(uint256 _id) internal {
         uint256 witAmount;
-        
-        if (allowanceBalance[_id] == 0) {
-            revert Atium_NoWithdrawal();
-        }
 
         uint256 a = block.timestamp;
         uint256 b = allowanceDate[_id];
         uint256 c = allowanceById[_id].withdrawalInterval;
 
-        if ((a - b) < c) {
-            revert Atium_OnlyFutureDate();
-        }
-
-        uint256 d = (a - b) / c;
+        uint256 d = ((a - b) / c) + 1;
         allowanceDate[_id] += (d * c);
         
         if (allowanceBalance[_id] < allowanceById[_id].withdrawalAmount) {
@@ -161,11 +141,12 @@ contract Atium is AtiumPlan {
 
         if (allowanceBalance[_id] >= allowanceById[_id].withdrawalAmount) {
             witAmount = d * allowanceById[_id].withdrawalAmount;
+
+            if (witAmount > allowanceBalance[_id])
+            witAmount = allowanceBalance[_id];
         }
 
         allowanceBalance[_id] -= witAmount;
-        addrToActiveAllowance[allowanceById[_id].receiver].remove(_id);    
-        addrToActiveAllowance[allowanceById[_id].receiver].add(_id);
 
         (bool sent, ) = payable(allowanceById[_id].receiver).call{value: witAmount}("");
         if (!sent) {
@@ -173,18 +154,14 @@ contract Atium is AtiumPlan {
         }
     }
 
-    function w_trustfund(uint256 _id) external {
+    function w_trustfund(uint256 _id) internal {
         uint256 witAmount;
-
-        if (trustfundBalance[_id] == 0) {
-            revert Atium_NoWithdrawal();
-        }
 
         uint256 a = trustfundById[_id].startDate;
         uint256 b = trustfundDate[_id];
         uint256 c = trustfundById[_id].withdrawalInterval;
 
-        uint256 d = (a - b) / c;
+        uint256 d = ((a - b) / c) + 1;
         trustfundDate[_id] += (d * c);
 
         if (trustfundBalance[_id] < trustfundById[_id].withdrawalAmount) {
@@ -193,27 +170,56 @@ contract Atium is AtiumPlan {
 
         if (trustfundBalance[_id] >= trustfundById[_id].withdrawalAmount) {
             witAmount = d * trustfundById[_id].withdrawalAmount;
+
+            if (witAmount > trustfundBalance[_id])
+            witAmount = trustfundBalance[_id];
         }
 
         trustfundBalance[_id] -= witAmount;
-        addrToActiveTrustfund[trustfundById[_id].receiver].remove(_id);    
-        addrToActiveTrustfund[trustfundById[_id].receiver].add(_id); 
         (bool sent, ) = payable(trustfundById[_id].receiver).call{value: witAmount}("");
         if (!sent) {
             revert Atium_TransactionFailed();
         }
     }
 
-    function w_gift(uint256 _id) external {
+    function w_gift(uint256 _id) internal {
         userG_Ids[giftById[_id].sender].removeElement(_id);
 
-        giftCancelled[_id] = true;
-        addrToActiveGift[giftById[_id].receiver].remove(_id);    
+        giftCancelled[_id] = true;  
 
         (bool sent, ) = payable(giftById[_id].receiver).call{value: giftById[_id].amount}("");
         if (!sent) {
             revert Atium_TransactionFailed();
         }
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    ///////////// W I T H D R A W A L    C A L L S    F O R   C H A I N L I N K /////////////
+    ///////////////////////////////  A U T O M A T I O N  ///////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    function allowanceWithdraw() external {
+        for (uint256 i = 1; i <= _allowanceId.current(); i++)
+        if (allowanceBalance[i] > 0)
+        if (block.timestamp >= allowanceDate[i])
+        w_allowance(i);
+    }
+
+    function trustfundWithdraw() external {
+        for (uint256 i = 1; i <= _trustfundId.current(); i++)
+        if (trustfundBalance[i] > 0)
+        if (block.timestamp >= trustfundDate[i])
+        w_trustfund(i);
+    }
+
+    function giftWithdraw() external {
+        for (uint256 i = 1; i <= _giftId.current(); i++) 
+        if (block.timestamp >= giftById[i].date)
+        w_gift(i);
+            
     }
 
 
@@ -228,7 +234,7 @@ contract Atium is AtiumPlan {
         userS_Ids[msg.sender].removeElement(_id);
 
         savingsCancelled[_id] = true;
-        addrToActiveAllowance[msg.sender].remove(_id);
+        ///addrToActiveAllowance[msg.sender].remove(_id);
 
         (bool sent, ) = payable(msg.sender).call{value: savingsById[_id].amount}("");
         if (!sent) {
@@ -243,7 +249,6 @@ contract Atium is AtiumPlan {
         userA_Ids[msg.sender].removeElement(_id);
 
         allowanceCancelled[_id] = true;
-        addrToActiveAllowance[msg.sender].remove(_id);    
         
         (bool sent, ) = payable(msg.sender).call{value: allowanceBalance[_id]}("");
         if (!sent) {
@@ -257,8 +262,7 @@ contract Atium is AtiumPlan {
         }
         userT_Ids[msg.sender].removeElement(_id);
 
-        trustfundCancelled[_id] = true;
-        addrToActiveTrustfund[msg.sender].remove(_id);    
+        trustfundCancelled[_id] = true;   
         
         (bool sent, ) = payable(msg.sender).call{value: trustfundBalance[_id]}("");
         if (!sent) {
@@ -272,8 +276,7 @@ contract Atium is AtiumPlan {
         }
         userG_Ids[msg.sender].removeElement(_id);
 
-        giftCancelled[_id] = true;
-        addrToActiveGift[msg.sender].remove(_id);    
+        giftCancelled[_id] = true; 
         
         (bool sent, ) = payable(msg.sender).call{value: giftById[_id].amount}("");
         if (!sent) {
@@ -281,9 +284,6 @@ contract Atium is AtiumPlan {
         }     
     }
     
-
-
-
     ///////////////////////////////////////////////////////
     ///////////////// GETTERS FUNCTIONS  //////////////////
     ///////////////////////////////////////////////////////
