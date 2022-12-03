@@ -2,14 +2,12 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 
 error Atium_NotOwnerId();
 error Atium_ZeroInput();
 
 contract AtiumPlan {
     using Counters for Counters.Counter;
-    using EnumerableSet for EnumerableSet.UintSet;
 
     Counters.Counter private _atiumId;
     Counters.Counter private _savingsId;
