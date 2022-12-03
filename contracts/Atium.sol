@@ -13,7 +13,6 @@ error Atium_SavingsGoal_Exceeded(uint256 goal, uint256 rem);
 
 contract Atium is AtiumPlan {
     using Counters for Counters.Counter;
-    using EnumerableSet for EnumerableSet.UintSet;
     using Array for uint256[];
 
     mapping(uint256 => bool) private savingsCancelled;
