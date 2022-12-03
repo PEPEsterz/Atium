@@ -28,21 +28,19 @@ contract Atium is AtiumPlan {
     ///////////////// DEPOSIT FUNCTIONS ///////////////////
     ///////////////////////////////////////////////////////
 
-    function save(uint256 _id, uint256 _amount) external payable inSavings(_id) {
-        if (_id == 0 || _amount == 0) {
+    function save(uint256 _id) external payable inSavings(_id) {
+        if (_id == 0 || msg.value == 0) {
             revert Atium_ZeroInput();
         }
-        if (msg.value != _amount) {
-            revert Atium_NotAmount();
-        }
-        if (_amount + savingsById[_id].amount > savingsById[_id].goal) {
+        
+        if (msg.value + savingsById[_id].amount > savingsById[_id].goal) {
             revert Atium_SavingsGoal_Exceeded({
                 goal: savingsById[_id].goal,
                 rem: savingsById[_id].goal - savingsById[_id].amount
             });
         }
  
-        savingsById[_id].amount += _amount;
+        savingsById[_id].amount += msg.value;
 
 
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
@@ -51,17 +49,14 @@ contract Atium is AtiumPlan {
         }
     }
 
-    function allowance(uint256 _id, uint256 _amount) external payable inAllowance(_id) {
-        if (_id == 0 || _amount == 0) {
+    function allowance(uint256 _id) external payable inAllowance(_id) {
+        if (_id == 0 || msg.value == 0) {
             revert Atium_ZeroInput();
-        }
-        if (msg.value != _amount) {
-            revert Atium_NotAmount();
         }
 
         allowanceDate[_id] = allowanceById[_id].startDate;
-        allowanceById[_id].deposit += _amount;
-        allowanceBalance[_id] += _amount;
+        allowanceById[_id].deposit += msg.value;
+        allowanceBalance[_id] += msg.value;
 
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
         if (!sent) {
@@ -69,17 +64,14 @@ contract Atium is AtiumPlan {
         }
     }
 
-    function trustfund(uint256 _id, uint256 _amount) external payable inTrustfund(_id) {
-        if (_id == 0 || _amount == 0) {
+    function trustfund(uint256 _id) external payable inTrustfund(_id) {
+        if (_id == 0 || msg.value == 0) {
             revert Atium_ZeroInput();
-        }
-        if (msg.value != _amount) {
-            revert Atium_NotAmount();
         }
 
         trustfundDate[_id] = trustfundById[_id].startDate;
-        trustfundById[_id].amount += _amount;
-        trustfundBalance[_id] += _amount;
+        trustfundById[_id].amount += msg.value;
+        trustfundBalance[_id] += msg.value;
 
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
         if (!sent) {
@@ -87,15 +79,12 @@ contract Atium is AtiumPlan {
         }
     }
 
-    function gift(uint256 _id, uint256 _amount) external payable inGift(_id) {
-        if (_id == 0 || _amount == 0) {
+    function gift(uint256 _id) external payable inGift(_id) {
+        if (_id == 0 || msg.value == 0) {
             revert Atium_ZeroInput();
         }
-        if (msg.value != _amount) {
-            revert Atium_NotAmount();
-        }
 
-        giftById[_id].amount += _amount;
+        giftById[_id].amount += msg.value;
 
         (bool sent, ) = payable(address(this)).call{value: msg.value}("");
         if (!sent) {
