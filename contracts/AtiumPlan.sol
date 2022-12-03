@@ -119,7 +119,7 @@ contract AtiumPlan {
         }
         _atiumId.increment();
         _savingsId.increment();
-        _time += block.timestamp;
+        _time;
 
         AtiumList memory a = AtiumList ({
             id: _atiumId.current(),
@@ -153,7 +153,7 @@ contract AtiumPlan {
 
         _atiumId.increment();
         _allowanceId.increment();
-        _startDate += block.timestamp;
+        _startDate;
 
         AtiumList memory a = AtiumList ({
             id: _atiumId.current(),
@@ -191,7 +191,7 @@ contract AtiumPlan {
 
         _atiumId.increment();
         _trustfundId.increment();
-        _startDate += block.timestamp;
+        _startDate;
 
         AtiumList memory a = AtiumList ({
             id: _atiumId.current(),
@@ -224,7 +224,7 @@ contract AtiumPlan {
 
         _atiumId.increment();
         _giftId.increment();
-        _date += block.timestamp;
+        _date;
 
         AtiumList memory a = AtiumList ({
             id: _atiumId.current(),
