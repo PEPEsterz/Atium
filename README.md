@@ -47,7 +47,7 @@ automated on the receiver's eventful day
 
 <p align="center" width="100%">
  <img src="<p align="center" width="100%">
- <img src="https://drive.google.com/uc?export=view&id=1oDl0IbicD7LhNOcYUbGzBYTJdduWim1t" alt="metamask"/>
+ <img src="https://drive.google.com/file/d/1QmjiGqyFNXwaQYkk0MF9hHwuNYM9m_8d/view?usp=sharing" alt="chainlink"/>
 </p>" alt="Chainlink Automation"/>
 </p>
 
