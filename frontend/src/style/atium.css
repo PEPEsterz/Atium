@@ -1,0 +1,347 @@
+.saving__section {
+    margin-top: 10px;
+    /* margin-left: 60px;
+    margin-right: 60px; */
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    z-index: 20;
+    background: #1a202c;
+    height:max-content;
+    
+    /* Center the modal */
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+
+/* input field for savings */
+.savings__details {
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    border: 2px solid gray;
+    border-radius: 8px;
+    padding: 20px 20px;
+}
+
+.savings__details > p:nth-child(1) {
+    font-size: 20px;
+    font-weight: 800;
+    padding-bottom: 20px;
+}
+
+.savings__details > p:nth-child(2) {
+    font-size: 15px;
+    font-weight: 400;
+    padding-bottom: 20px;
+}
+
+.savings__details > input {
+    font-size: 20px;
+    font-size: 12pts;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #fff;
+    border: 1px solid #fff;
+    background-color: black;
+    outline: none;
+}
+
+.save__btn {
+    background: #4F46E5;
+    margin-top: 20px;
+    background-size: 200%;
+    animation: gradient-animation 4s ease infinite;
+    height: 40px;
+    width: 100%;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    line-height: 32px;
+    cursor: pointer;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+/* Plan details input field */
+.plan__details {
+    width: 100%;
+}
+
+.plan__details > p:nth-child(1) {
+    font-size: 20px;
+    font-weight: 800;
+    padding-bottom: 15px;
+}
+
+.plan__details > input {
+    font-size: 20px;
+    font-size: 12pts;
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: black;
+    border: 1px solid #fff;
+    outline: none;
+}
+
+.setplan__btn {
+    background: #4F46E5;
+    margin-top: 20px;
+    background-size: 200%;
+    animation: gradient-animation 4s ease infinite;
+    height: 40px;
+    width: 100%;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    line-height: 32px;
+    cursor: pointer;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+/* Goal details */
+.goal__details {
+    width: 100%;
+}
+
+.goal__details > p:nth-child(1) {
+    font-size: 20px;
+    font-weight: 800;
+    padding-bottom: 15px;
+}
+
+.goal__details > input {
+    font-size: 20px;
+    font-size: 12pts;
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: black;
+    border: 1px solid #fff;
+    outline: none;
+}
+
+.setgoal__btn {
+    background: #4F46E5;
+    margin-top: 20px;
+    background-size: 200%;
+    animation: gradient-animation 4s ease infinite;
+    height: 40px;
+    width: 100%;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    line-height: 32px;
+    cursor: pointer;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+/* Time Lock Details */
+.time__lock__details {
+    width: 100%;
+}
+
+.time__lock__details > p:nth-child(1) {
+    font-size: 20px;
+    font-weight: 800;
+    padding-bottom: 15px;
+}
+
+.time__lock__details > input {
+    font-size: 20px;
+    font-size: 12pts;
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: black;
+    border: 1px solid #fff;
+    outline: none;
+}
+
+/* deposit an amount */
+.deposit__modal {
+    width: 90%;
+    margin: 20px 20px; 
+}
+
+.deposit__modal > p:nth-child(1) {
+    font-size: 20px;
+    font-weight: 800;
+    padding-bottom: 15px;
+}
+
+.deposit__modal > input {
+    font-size: 20px;
+    font-size: 12pts;
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: black;
+    border: 1px solid #fff;
+    outline: none;
+}
+
+.deposit__btn {
+    background: #4F46E5;
+    margin-top: 20px;
+    background-size: 200%;
+    animation: gradient-animation 4s ease infinite;
+    height: 40px;
+    width: 100%;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    line-height: 32px;
+    cursor: pointer;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+.create__btn {
+    background: #4F46E5;
+    margin-top: 20px;
+    background-size: 200%;
+    animation: gradient-animation 4s ease infinite;
+    height: 40px;
+    width: 100%;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    line-height: 32px;
+    cursor: pointer;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+
+/*input Modal*/
+.overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.close-sign {
+    background-size: 100%;
+    animation: gradient-animation 4s ease infinite;
+    height: 35px;
+    width: 35px;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    line-height: 32px;
+    cursor: pointer;
+    border-radius: 50%;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+
+/*table to store the varIous plans*/
+
+.row__box {
+    border: 1px solid white;
+    padding: 10px 10px;
+    height: max-content;
+}
+
+.item__box {
+    width: max-content;
+    padding: 10px 10px;
+    height: 100px;
+}
+
+.withdraw__btn {
+    border-radius: 8px;
+    background-color: #4F46E5;
+}
+
+td {
+    text-align: center;
+}
+
+th {
+    border-bottom: 1px solid #4F46E5;
+    margin-bottom: 10px;
+}
+
+.plan__default {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: max-content;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 3px;
+    background-color: white;
+    border: solid 2px #D3D3D3;
+    color:black;
+    /* font-weight: 600; */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    -webkit-transition: 1s; /* Safari */
+    transition: 1s;
+}
+
+.plan__modal {
+    height: max-content;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    z-index: 10;
+    border-radius: 3px;
+    background-color: #fff;
+    border: solid 2px #D3D3D3;
+}
+
+.plan__modal > p {
+    cursor: pointer;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    padding-left: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    width: 100%;
+    line-height: 1.24;
+    border: 1px solid #D3D3D3;
+}
+
+.plan__modal > p:hover {
+    background-color: #D3D3D3;
+}
+
+
+
