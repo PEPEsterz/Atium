@@ -71,4 +71,6 @@ The package consists of a single repo:
 ### Troubleshoot
 
 1. If transaction returns error (JSON RPC ERROR) <br />
-When metamask notification pops up for confirmation, wait for about 5 seconds or more before confirming the transaction.
+When metamask notification pops up for confirmation, wait for about 5 seconds or more before confirming the transaction. <br /> <br />
+
+Increae gas limits 
