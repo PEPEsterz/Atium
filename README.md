@@ -1,27 +1,55 @@
 # ATIUM
 
-## Tech Stack - DeFi
+
+#
+## Description
+
+This is a platform that enables users to save towards a goal, run an allowance for a ward or a trustfund plan for a ward in the future and easily gift their friends and family towards an event
+
+#
 
 
-# 1. Description
+#
+> ## Tech Stack
+|   <b><u>Stack</u></b>     |  <b><u>Usage</u></b>               |
+| :-------------------------| :----------------------------------|
+| **`Solidity`**            | Smart contract language            |
+| **`React JS`**            | JavaScript library for UI          |
+| **`Polygon`**             | Blockchain                         |
+| **`Hardhat`**             | Ethereum devevelopment Environment |
+| **`Alchemy`**             | Web3 development platform          |
+| **`wagmi`**               | React hooks used for Atium         |
+| **`Rainbow Toolkit`**     | Connect Wallet button              |
+| **`OpenZeppelin`**        | Counters library                   |
+| **`Chainlink`**           | Functions automation               |
+ 
+#
 
-This is a platform that enables users to save towards a goal, easily gift to their friends and family, run an allowance for a ward or a trustfund plan for a ward in the future
 
 ### Use of the product
 
-A user comes on the platfrom to choose a plan. The list of Atium plans are:
+When a user connects to this platform, the user has the option of selecting a Savings Plan,
+Allowance Plan, Trustfund Plan, or Gift Plan. These plans are chosen based on the user's interests.
 
 - **Savings** <br />
-The savings plan enables you to save towards a goal or an event of your choice. Excpet the plan is cancelled, savings can not be withdrawn from the contract until goal is reached
+The user can choose to save up to a goal in the savings plan, which can be an amount or a time limit.
+Withdrawal is only possible after the goal has been met.
 
 - **Allowance** <br />
 The allowance plan is a plan created for guardians. In this case, the user can selcet the withdrawal amount and interval for the allowance. The bbenefit of this is that the guardian/sender does not have to constantly send allowance at every interval. All deposits could be made at the beginning, but only the selected amount can be withdrawn at every interval
 
 - **Trustfund** <br />
-The trustfund plan is very similar to the allowance plan. The trustfund plan is for a much later date in time. You can now do more with your crypto assets by allocating them to your ward at a stipulated age
+The trustfund plan is for users that want to set up a trustfund for their wards. A startdate is inputted and the method of withdrawal interval is chosen. Withdrawl is automated by Chainlink
 
 - **Gift** <br />
-The gift plan is a single transaction that can be redeemed by the receiver on the day of the event 
+The Gift plan is made specifically to deposit an amount in anticipation of an event. The gift plan is
+automated on the receiver's eventful day  
+
+<p align="center" width="100%">
+ <img src="<p align="center" width="100%">
+ <img src="https://drive.google.com/uc?export=view&id=1oDl0IbicD7LhNOcYUbGzBYTJdduWim1t" alt="metamask"/>
+</p>" alt="Chainlink Automation"/>
+</p>
 
 The Blockchain package contains custom smart contracts which deploy to Polygon. For this hackathon, it has been deployed on Polygon testnet - mumbai 
 
@@ -29,66 +57,9 @@ The package consists of a single repo:
 
 [https://github.com/galadd/Atium.git](https://github.com/galadd/Atium.git)
 
-# 2. Solution Overview
 
-The Blockchain package is based on `node` using `hardhat` as a foundation.
+### Deployment
 
-The codebase is built in `solidity` with `javascript` used for testing and deployment scripts.
-
-Key components include:
-
-- **Hardhat**:  Framework for writing, testing and deploying Solidity smart contracts.
-- **Contracts**: collection of solidity smart contracts
-- **Scripts**: deployment scripts used with hardhat to deploy contracts to EVM blockchains
-- **Test**: test scripts written with `waffle` (a mocha implementation for Solidity) and executed with hardhat.
-
-# 3. Key Dependencies
-
-## Internal
-
-- n/a
-
-## External
-
-- **OpenZeppelin**:  Industry-standard repository from which we inherit blockchain interfaces.
-
-# 4. Key Configurations
-
-Key values:
-
-- MUMBAI_ALCHEMY_URL: url to the Alchemy api used to connect to the Polygon blockchains
-- MUMBAI_DEV_KEY: private key of account with which we deploy our smart contracts
-- POLYGONSCAN_API_KEY: used for validating smart contracts on Polygon.
-
-# 5. How to Run
-
-Find an empty local folder and run the following commands.
-
-```bash
-git clone https://github.com/galadd/Atium.git
-npm install
-```
-
-Create a `.env` and declare the alchmy url for mumbai, private key and polygon api key as MUMBAI_ALCHEMY_URL, MUMBAI_DEV_KEY and POLYGONSCAN_API_KEY respectively
-
-A blockchain app is not technically ‘run’ locally.  We can use hardhat to compile, test and deploy.
-
-# 6. How to Test
-
-Testing will be performed using `waffle` which is a Solidity extension for mocha.  
-
-```bash
-npx hardhat test
-```
-
-# 7. How to Deploy
-
-```bash
-npx hardhat run --network polygon_mumbai scripts/atium.deploy.js
-```
 #### Atium.sol
 
 - https://mumbai.polygonscan.com/address/0xEA5B4d81115aa221E38Ea1f8aAc8F39f46701A73#code
-
-
-# Troubleshooting
