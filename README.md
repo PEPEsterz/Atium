@@ -31,6 +31,10 @@ This is a platform that enables users to save towards a goal, run an allowance f
 When a user connects to this platform, the user has the option of selecting a Savings Plan,
 Allowance Plan, Trustfund Plan, or Gift Plan. These plans are chosen based on the user's interests.
 
+<p align="center" width="100%">
+ <img src="./docs/choose_plans.png" alt="choose plans"/>
+</p> 
+
 - **Savings** <br />
 The user can choose to save up to a goal in the savings plan, which can be an amount or a time limit.
 Withdrawal is only possible after the goal has been met.
