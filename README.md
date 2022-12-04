@@ -46,7 +46,7 @@ The Gift plan is made specifically to deposit an amount in anticipation of an ev
 automated on the receiver's eventful day  
 
 <p align="center" width="100%">
- <img src="https://drive.google.com/uc?export=view&id=14kXYzut2patUkmVA3blOJWGzGAneU9L9" alt="chainlink"/>
+ <img src="./docs/Chainlink.png" alt="chainlink"/>
 </p> 
 
 
