@@ -1,0 +1,57 @@
+.allowance__section {
+    margin-top: 30px;
+}
+
+.allowance___details {
+    width: 90%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.allowance___details > p {
+    font-size: 20px;
+    font-weight: 800;
+    padding-bottom: 15px;
+}
+
+.allowance___details > input {
+    font-size: 20px;
+    font-size: 12pts;
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    color: #fff;
+    background-color: black;
+    border: 1px solid #fff;
+    outline: none;
+}
+
+::placeholder {
+    color: white;
+}
+
+.allowance___details > button {
+    background: #4F46E5;
+    margin-top: 20px;
+    background-size: 200%;
+    animation: gradient-animation 4s ease infinite;
+    height: 40px;
+    width: 100%;
+    font-size: 17px;
+    font-weight: 700;
+    color: white;
+    line-height: 32px;
+    cursor: pointer;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid transparent;
+}
+
+
+
+
+
+
+
