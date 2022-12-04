@@ -46,10 +46,9 @@ The Gift plan is made specifically to deposit an amount in anticipation of an ev
 automated on the receiver's eventful day  
 
 <p align="center" width="100%">
- <img src="<p align="center" width="100%">
- <img src="https://drive.google.com/file/d/1QmjiGqyFNXwaQYkk0MF9hHwuNYM9m_8d/view?usp=sharing" alt="chainlink"/>
-</p>" alt="Chainlink Automation"/>
-</p>
+ <img src="https://drive.google.com/uc?export=view&id=14kXYzut2patUkmVA3blOJWGzGAneU9L9" alt="chainlink"/>
+</p> 
+
 
 The Blockchain package contains custom smart contracts which deploy to Polygon. For this hackathon, it has been deployed on Polygon testnet - mumbai 
 
