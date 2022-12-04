@@ -16,9 +16,9 @@ const Home = () => {
             <Navbar/>
             <div className='flex flex-col text-center items-center sm:mt-10 mt-3 sm:w-[70%] w-[95%] mx-auto'>
                 <div>
-                    <h1 className='sm:mt-5 sm:text-[60px] text-[25px] font-black text-white inline-block'><span>Payments & treasury</span> infrastructure for the internet</h1>
-                    <p className='sm:mt-5 sm:text-[20px] text-[12px] w-[90%] text-[#000000] text-center items-center mx-auto text-gray sm:w-[80%]'>We want managing digital currency to be as easy as possible. Our free and 
-                    easy-to-use Atium Account lets your business get started with our full suite of payment, treasury and liquidity solutions.</p>
+                    <h1 className='sm:mt-5 sm:text-[60px] text-[25px] font-black text-white inline-block'><span>Automated Payment Protocol</span> on Polygon</h1>
+                    <p className='sm:mt-5 sm:text-[20px] text-[12px] w-[90%] text-[#000000] text-center items-center mx-auto text-gray sm:w-[80%]'>We want disbursements of funds to be as easy as possible. 
+                    Automated payment of allowances and trustfunds to beneficiaries</p>
                 </div>
 
                 <div className='sm:mt-5 mt-2 flex sm:flex-row flex-col sm:space-x-3 sm:space-y-0 space-y-3'>
