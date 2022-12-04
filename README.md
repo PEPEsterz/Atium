@@ -66,3 +66,9 @@ The package consists of a single repo:
 #### Atium.sol
 
 - https://mumbai.polygonscan.com/address/0xEA5B4d81115aa221E38Ea1f8aAc8F39f46701A73#code
+
+
+### Troubleshoot
+
+1. If transaction returns error (JSON RPC ERROR) <br />
+When metamask notification pops up for confirmation, wait for about 5 seconds or more before confirming the transaction.
