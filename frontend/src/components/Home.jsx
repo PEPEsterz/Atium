@@ -1,6 +1,8 @@
 import React, { useState, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { MdOutlineSavings } from 'react-icons/md';
+import { BsCashCoin } from 'react-icons/bs';
+import { RiRefund2Line } from 'react-icons/ri';
 import { useNavigate, Link } from 'react-router-dom';
 import { BsGift } from 'react-icons/bs';
 import { SlDocs } from 'react-icons/sl';
@@ -16,24 +18,21 @@ const Home = () => {
             <Navbar/>
             <div className='flex flex-col text-center items-center sm:mt-10 mt-3 sm:w-[70%] w-[95%] mx-auto'>
                 <div>
-                    <h1 className='sm:mt-5 sm:text-[60px] text-[25px] font-black text-white inline-block'><span>Automated Payment Protocol</span> on Polygon</h1>
-                    <p className='sm:mt-5 sm:text-[20px] text-[12px] w-[90%] text-[#000000] text-center items-center mx-auto text-gray sm:w-[80%]'>We want disbursements of funds to be as easy as possible. 
-                    Automated payment of allowances and trustfunds to beneficiaries</p>
+                    <h1 className='sm:mt-5 sm:text-[60px] mt-4 text-[25px] font-black text-white inline-block'><span>Automated Payment</span> Protocol on Polygon</h1>
+                    <p className='sm:mt-5 sm:text-[20px] mt-4 text-[12px] w-[90%] text-[#000000] text-center items-center mx-auto text-gray sm:w-[80%]'>We want users to disburse funds at a future time without having to constantly trigger it.
+                    Disbursement calls are automated and handled by Atium. </p>
                 </div>
 
-                <div className='sm:mt-5 mt-2 flex sm:flex-row flex-col sm:space-x-3 sm:space-y-0 space-y-3'>
+                <div className='sm:mt-5 flex sm:flex-row flex-col mt-4 sm:space-x-3 sm:space-y-0 space-y-3'>
                     <button className='h-[50px] sm:w-[250px] w-[90vw] text-xl font-extrabold bg-black hover:bg-[#252626] text-white outline-none cursor-pointer border-1-transparent rounded-lg' onClick={() => setOpen(true)}>GET STARTED</button>
-                    <Link to={{ pathname: "https://github.com/shegz101/Atium/blob/main/README.md" }} target="_blank">
+                    <a href="https://github.com/galadd/Atium/blob/main/README.md" target="_blank">
                         <button className='sm:h-[50px] sm:w-[250px] w-[90vw] px-2 py-2 text-xl flex flex-row justify-center font-extrabold bg-[transparent] hover:bg-black hover:text-white border-2 border-black text-black outline-none cursor-pointer rounded-lg'>
                             <span className='pr-1'>LEARN MORE</span>
                             <span className="pt-1 pl-1"><SlDocs className='font-black'/></span>
                         </button>
-                    </Link>
+                    </a>
                 </div>
             </div>
-
-            {/* The footer arc */}
-            <div className="arc w-full"></div>
             
             <Transition.Root show={open} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={setOpen}>
@@ -85,7 +84,7 @@ const Home = () => {
 
                                     <div onClick={() => navigate('/allowance')} className="sm:flex sm:justify-between mb-2 hover:bg-zinc-800 rounded-lg py-2 px-2">
                                         <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center mt-3 justify-center rounded-full text-white sm:mx-0 sm:h-10 sm:w-10">
-                                            <MdOutlineSavings className="h-8 w-8 text-[#fff]-600" aria-hidden="true" />
+                                            <BsCashCoin className="h-8 w-8 text-[#fff]-600" aria-hidden="true" />
                                         </div>
                                         <div className="mt-3 flex flex-col sm:text-left text-center">
                                             <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-[#fff]">
@@ -94,6 +93,22 @@ const Home = () => {
                                             <div className="mt-1">
                                                 <p className="text-sm text-gray-500">
                                                     You can easily send allowance to someone by setting the interval.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div onClick={() => navigate('/trustfund')} className="sm:flex sm:justify-between mb-2 hover:bg-zinc-800 rounded-lg py-2 px-2">
+                                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center mt-3 justify-center rounded-full text-white sm:mx-0 sm:h-10 sm:w-10">
+                                            <RiRefund2Line className="h-7 w-7 text-[#fff]-600" aria-hidden="true" />
+                                        </div>
+                                        <div className="mt-3 flex flex-col sm:text-left text-center mr-2">
+                                            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-[#fff]">
+                                                Trust Fund Plan
+                                            </Dialog.Title>
+                                            <div className="mt-1">
+                                                <p className="text-sm text-gray-500">
+                                                    You can either save to a goal or to an amount.
                                                 </p>
                                             </div>
                                         </div>
@@ -110,22 +125,6 @@ const Home = () => {
                                             <div className="mt-1">
                                                 <p className="text-sm text-gray-500">
                                                     You can gift friend and also set when it will be accessible.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div onClick={() => navigate('/trustfund')} className="sm:flex sm:justify-between mb-2 hover:bg-zinc-800 rounded-lg py-2 px-2">
-                                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center mt-3 justify-center rounded-full text-white sm:mx-0 sm:h-10 sm:w-10">
-                                            <MdOutlineSavings className="h-8 w-8 text-[#fff]-600" aria-hidden="true" />
-                                        </div>
-                                        <div className="mt-3 flex flex-col sm:text-left text-center">
-                                            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-[#fff]">
-                                                Trust Fund Plan
-                                            </Dialog.Title>
-                                            <div className="mt-1">
-                                                <p className="text-sm text-gray-500">
-                                                    You can either save to a goal or to an amount.
                                                 </p>
                                             </div>
                                         </div>

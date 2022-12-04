@@ -36,12 +36,14 @@ const Savings = () => {
     const [plantext, setPlanText] = useState("Select a Plan");
     const [goalamt, setGoalAmt] = useState("");
     const [locktime, setLockTime] = useState("");
+    // const [data, setData] = useState([]);
     let [page, setPage] = useState(1);
     //array for the plans
     const [plans, setPlans] = useState([]);
     //active plan
     const [activePlanId, setActivePlanId] = useState(0);
-
+    //set loading state
+    const [loading, setLoading] = useState(false);
     //state to store deposited amount
     const [deposit, setDeposit] = useState("");
     const [editAmount, setEditAmount] = useState(0);
@@ -66,56 +68,57 @@ const Savings = () => {
     const [click, setClick] = useState(false);
     // let [copybtnColor, setCopyBtnColor] = useState('text-[#110f36]');
 
-    const data = [
-        {
-            id: 1,
-            plan_type: 'Goal',
-            address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189411",
-            amount_saved: '0',
-            goal_amount: 20,
-            timeLock: ''
-        },
-        {
-            id: 2,
-            plan_type: 'Time Lock',
-            address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189412",
-            amount_saved: '0',
-            goal_amount: " ",
-            timeLock: '2023-05-10'
-        },
-        {
-            id: 3,
-            plan_type: 'Time Lock',
-            address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413",
-            amount_saved: '0',
-            goal_amount: " ",
-            timeLock: '2023-04-20'
-        },
-        {
-            id: 4,
-            plan_type: 'Goal',
-            address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189414",
-            amount_saved: '20',
-            goal_amount: 20,
-            timeLock: ''
-        },
-        {
-            id: 5,
-            plan_type: 'Time Lock',
-            address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189415",
-            amount_saved: '0',
-            goal_amount: " ",
-            timeLock: '2022-04-08'
-        },
-        {
-            id: 6,
-            plan_type: 'Time Lock',
-            address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189416",
-            amount_saved: '0',
-            goal_amount: " ",
-            timeLock: '2023-06-08'
-        },
-    ]
+    // const dataArray = [
+    //     {
+    //         id: 1,
+    //         plan_type: 'Goal',
+    //         address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189411",
+    //         amount_saved: '0',
+    //         goal_amount: 20,
+    //         timeLock: ''
+    //     },
+    //     {
+    //         id: 2,
+    //         plan_type: 'Time Lock',
+    //         address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189412",
+    //         amount_saved: '0',
+    //         goal_amount: " ",
+    //         timeLock: '2023-05-10'
+    //     },
+    //     {
+    //         id: 3,
+    //         plan_type: 'Time Lock',
+    //         address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189413",
+    //         amount_saved: '0',
+    //         goal_amount: " ",
+    //         timeLock: '2023-04-20'
+    //     },
+    //     {
+    //         id: 4,
+    //         plan_type: 'Goal',
+    //         address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189414",
+    //         amount_saved: '20',
+    //         goal_amount: 20,
+    //         timeLock: ''
+    //     },
+    //     {
+    //         id: 5,
+    //         plan_type: 'Time Lock',
+    //         address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189415",
+    //         amount_saved: '0',
+    //         goal_amount: " ",
+    //         timeLock: '2022-04-08'
+    //     },
+    //     {
+    //         id: 6,
+    //         plan_type: 'Time Lock',
+    //         address: "0xBB9bc244D798123fDe783fCc1C72d3Bb8C189416",
+    //         amount_saved: '0',
+    //         goal_amount: " ",
+    //         timeLock: '2023-06-08'
+    //     },
+    // ]
+    // setData(dataArray);
 
     
     useEffect(() => {
@@ -123,6 +126,7 @@ const Savings = () => {
             effect.current = false;
             const fetch = async () => {
                 try {
+                    setLoading(true);
                     let plansArray = [];
 
                     console.log("Fetching plans...");
@@ -139,7 +143,9 @@ const Savings = () => {
                     }
             
                     setPlans(plansArray);
+                    setLoading(false);
                 } catch (error) {
+                    setLoading(false);
                     toast.error("failed fetching savings" + error.message);
                 }
             }
@@ -236,6 +242,7 @@ const Savings = () => {
 
         setPage(1);
         setOpen(false);
+        setLockTime("");
     }
 
     //function to open plan type modal
@@ -364,8 +371,13 @@ const Savings = () => {
                     </button>
                 </div>
             </div>
-
+            
             {
+                loading ? (
+                    <div className="mt-8 mx-auto">
+                        <p className='text-[#fff] font-bold sm:text-4xl text-1xl'>Fetching Plans....</p>
+                    </div>
+                ) : (
                 plans < 1 ? (
                     <div className="mt-8 mx-auto">
                         <p className='text-[#fff] font-bold sm:text-4xl text-1xl'>You have no Savings Plan yet !</p>
@@ -376,7 +388,7 @@ const Savings = () => {
                     <div className="image__crop w-full flex flex-row mt-5 mx-auto overflow-y-hidden overflow-x-scroll">
                         {
                             plans.map((plan) =>(
-                                <div className='h-[292px] w-[226px] pt-2 pb-3 px-3'>
+                                <div className='h-[292px] sm:w-[226px] w-[90%] pt-2 pb-3 px-3'>
                                     <div className="bg-white p-5 bg-opacity-60 backdrop-filter backdrop-blur-lg
                                     text-black h-max w-[202px] py-2 px-4 border-2-[#ffffff]
                                     shadow-lg shadow-blue-500/50 hover:shadow-indigo-500/40 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-105 duration-300 rounded-lg mx-2">
@@ -385,7 +397,15 @@ const Savings = () => {
                                         <p className="font-semibold pt-3">Amount Saved:</p>
                                         <p className="text-center text-2xl pt-3">{plan.amount_saved}<sub className="text-white">MATIC</sub></p>
                                         {console.log(plan.amount_saved)}
-                                        <p className="font-semibold pt-3">Goal/Time:</p>
+                                        <p className="font-semibold pt-3">
+                                            {
+                                                plan.goal_amount !== "" || Number(plan.goal_amount) !== 0 ? (
+                                                   <>Goal Amount:</> 
+                                                ) : (
+                                                    <>Time Lock:</>
+                                                )
+                                            }
+                                        </p>
                                         <p className="text-center text-2xl pt-3">
                                             {
                                                 plan.goal_amount !== " " ? (
@@ -416,7 +436,9 @@ const Savings = () => {
                     </div>
                   </> 
                 )
+                )
             }
+
 
             {/* Modal to Deposit Funds */}
             <Transition.Root show={opendeposit} as={Fragment}>

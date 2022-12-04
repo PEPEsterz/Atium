@@ -193,7 +193,7 @@ const Gift = () => {
             {
                 gifts < 1 ? (
                     <div className="mt-8 mx-auto">
-                        <p className='text-[#fff] font-bold text-4xl'>You have no Gift Plan yet !</p>
+                        <p className='text-[#fff] font-bold sm:text-4xl text-1xl'>You have no Gift Plan yet !</p>
                     </div>
                 ) : (
                   <>
@@ -249,7 +249,7 @@ const Gift = () => {
                     </Transition.Child>
 
                     <div className="fixed inset-0 z-10 overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <div className="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
                             <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -259,8 +259,8 @@ const Gift = () => {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#000000] shadow-xl transition-all mx-2 sm:my-8 sm:w-full h-max sm:max-w-sm">
-                                    <div className="flex flex-col px-4 py-2 mx-auto w-full cursor-pointer">
+                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#000000] shadow-xl transition-all mx-2 sm:my-8 sm:w-full w-[95%] h-max sm:max-w-sm">
+                                    <div className="flex flex-col px-4 py-2 mx-auto sm:w-full w-[95%] cursor-pointer">
                                         <div className='flex justify-end mt-2'>
                                             <button className="bg-zinc-700 hover:bg-zinc-800 h-[30px] w-[30px] text-[20px] text-gray-500 font-black cursor-pointer rounded-full" onClick={() => setOpenDeposit(false)}>
                                                 &times;
@@ -305,7 +305,7 @@ const Gift = () => {
                     </Transition.Child>
 
                     <div className="fixed inset-0 z-10 overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <div className="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
                             <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -315,8 +315,8 @@ const Gift = () => {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#000000] shadow-xl transition-all mx-2 sm:my-8 sm:w-full h-max sm:max-w-sm">
-                                    <div className="flex flex-col px-4 py-2 mx-auto w-full cursor-pointer">
+                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-[#000000] shadow-xl transition-all mx-2 sm:my-8 sm:w-full w-[95%] h-max sm:max-w-sm">
+                                    <div className="flex flex-col px-4 py-2 mx-auto sm:w-full w-[95%] cursor-pointer">
                                         <div className='flex justify-end mt-2'>
                                             <button className="bg-zinc-700 hover:bg-zinc-800 h-[30px] w-[30px] text-[20px] text-gray-500 font-black cursor-pointer rounded-full" onClick={() => setOpen(false)}>
                                                 &times;
